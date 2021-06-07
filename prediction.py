@@ -45,7 +45,7 @@ def day(data):
 # print(day(data))
 
 
-weeks = 1
+weeks = 3
 x1 = av(weeks, data)
 x2 = threedays(data)[weeks*24*2*7:]
 x3 = day(data)[weeks*24*2*7:]
@@ -70,7 +70,7 @@ x1_test = av(weeks, data_test)
 x2_test = threedays(data_test)[weeks*24*2*7:]
 x3_test = day(data_test)[weeks*24*2*7:]
 expected = data_test[:]
-expected = expected[weeks*24*2*7:]
+expected = expected[weeks*24*2*7:].values
 x_test = np.array([x1_test, x2_test, x3_test]).T
 x_test = scaler.transform(x_test)
 
