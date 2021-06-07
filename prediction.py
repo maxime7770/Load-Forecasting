@@ -13,6 +13,12 @@ data = pd.read_csv(
     'dataset_centrale/data/train/ILE DE FRANCE.csv')['Consommation']
 
 
+# On effectue une régression pour prédire la consommation. On ne prend pas en compte les autres variables (températures,
+# pluie, nuages)
+
+# Comme dit dans les slides, j'ai pris comme covariables la moyenne sur les semaines passées, la valeur 3 jours avant,
+# et le jour de la semaine où la consommation est mesurée :
+
 def av(weeks, data):  # moyennes sur les semaines précédentes
     t = weeks*7*24*2
     n = len(data)
@@ -79,16 +85,24 @@ print(x_test.shape)
 ypred = lr.predict(x_test)
 
 
+# Ici on trace la valeur prédite en fonction de la valeur attendue
+# Dans le cas idéal, on doit être très proche de la droite en pointillés
+
 plt.scatter(expected, ypred)
 plt.plot([0, 12000], [0, 12000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((ypred - expected) ** 2))))
 plt.show()
+
+
+# Maintenant on trace séparément ypred et expected : dans le cas idéal, les 2 courbes doivent être proches
 
 plt.plot(ypred, label='valeur prédite')
 plt.plot(expected, label='valeur attendue')
 plt.legend()
 plt.show()
 
+
+# la fonction suivante renvoie le MAPE
 
 def mean_absolute_percentage_error(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
