@@ -59,35 +59,37 @@ def medians():
 
 # medians()
 
-# pour prendre les données qui correspondent à un mois en particulier pour la région r
-def selectionner(mois, r):
-    f = pd.read_csv("dataset_centrale/data/train/%s.csv" % mois)
+# pour prendre les données qui correspondent à un mois en particulier pour une région
+def extraction(debut, fin, fichier):
+    df = pd.read_csv(fichier, index_col=0)
+    d = '{} 00:00:00'.format(debut)
+    f = '{} 23:30:00'.format(fin)
+    data = df.loc[d:f]
+    conso = np.array(data['Consommation'])
+    return conso
 
-    return ()
 
-
-def mois():
+def mois(debut, fin):
     fig, axs = plt.subplots(2, 1, figsize=(8, 10))
     axs = axs.ravel()
-    l = ["BRETAGNE", "NORMANDIE"]
-    t1, t2 = 6*1440, 7*1440
-    mois = "Juillet"
+    # mettre ici les 2 régions à comparer
+    l = ["NORMANDIE", "PROVENCE ALPES COTE D AZUR"]
+
     m = []
     for i in range(2):
-        f = pd.read_csv(
-            "dataset_centrale/data/train/%s.csv" % l[i])
-        cons = f['Consommation']
+        f = "dataset_centrale/data/train/%s.csv" % l[i]
 
-        axs[i].plot(cons[t1:t2])
-        axs[i].set_title('Mois de %s en %s' % (mois, l[i]))
+        axs[i].plot(extraction(debut, fin, f))
+        axs[i].set_title('Consommaion de %s à %s en %s' % (debut, fin, l[i]))
 
-        m.append(np.mean(cons))
+        m.append(np.mean(extraction(debut, fin, f)))
     plt.show()
     print('Les consommations en moyenne pendant le mois de %s en %s et %s sont respectivement %s et %s' % (
         mois, l[0], l[1], m[0], m[1]))
 
 
-# mois()
+mois('2016-07-01', '2016-08-01')
+
 
 def var_exogenes():
     f = pd.read_csv(
@@ -105,7 +107,7 @@ def var_exogenes():
         plt.show()
 
 
-var_exogenes()
+# var_exogenes()
 
 # aucune influence des nuages sur la consommation, et très peu d'influence de la quantité de pluie qui tombe
 # par contre, influence de la température est notable
