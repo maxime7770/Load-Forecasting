@@ -59,6 +59,13 @@ def medians():
 
 # medians()
 
+# pour prendre les données qui correspondent à un mois en particulier pour la région r
+def selectionner(mois, r):
+    f = pd.read_csv("dataset_centrale/data/train/%s.csv" % mois)
+
+    return ()
+
+
 def mois():
     fig, axs = plt.subplots(2, 1, figsize=(8, 10))
     axs = axs.ravel()
@@ -80,4 +87,25 @@ def mois():
         mois, l[0], l[1], m[0], m[1]))
 
 
-mois()
+# mois()
+
+def var_exogenes():
+    f = pd.read_csv(
+        "dataset_centrale/data/train/ILE DE FRANCE.csv")
+
+    #fig, axs = plt.subplots(1, 3, figsize=(20, 16))
+    #axs = axs.ravel()
+    l = ["tmp2m", "prate", "tcdcclm"]
+    dic = {"tmp2m": "Température", "prate": "Pluie", "tcdcclm": "Nuages"}
+    for i in range(3):
+        plt.scatter(f[l[i]][::15], f["Consommation"][::15])
+        plt.ylabel('Consommation')
+        plt.xlabel(dic[l[i]])
+
+        plt.show()
+
+
+var_exogenes()
+
+# aucune influence des nuages sur la consommation, et très peu d'influence de la quantité de pluie qui tombe
+# par contre, influence de la température est notable
