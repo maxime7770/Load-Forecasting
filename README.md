@@ -3,4 +3,4 @@
 # Description
 
 
-# Members : Bapiste Carbillet, Steve Mbarga Mbarga, Hugo Heitz, Enguerrand Voisine, Maxime Wolf
+# Members : Baptiste Carbillet, Steve Mbarga Mbarga, Hugo Heitz, Enguerrand Voisine, Maxime Wolf
