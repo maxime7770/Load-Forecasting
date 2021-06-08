@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[129]:
+# In[298]:
 
 
 import pandas as pd
@@ -9,22 +9,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 from statsmodels.distributions.empirical_distribution import ECDF
 import math 
+import statsmodels.api as sm
 
 
-# In[154]:
+# In[261]:
 
 
 #importe le datagramme de la région: mettre le nom exact du fichier excel (/!\ aux majuscules)
 def region_data(region):
-    df = pd.read_csv('dataset_centrale/data/train/{}.csv'.format(region),index_col=0)
+    df = pd.read_csv('data centrale/train/{}.csv'.format(region),index_col=0)
     return df
 
 
-# In[192]:
+# In[265]:
 
 
-df = pd.read_csv('REGION/Train/BRETAGNE.csv',index_col=0)
-df
+region="auvergne rhone alpes"
+pd.read_csv('data centrale/train/{}.csv'.format(region))
 
 
 # In[155]:
@@ -54,7 +55,7 @@ def saison(region):
     Hiv2016=np.array(Hiver_2016['Consommation'])
     plt.subplot(3,3,1)
     plt.plot(Hiv2016)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'éléectricité à l'Hiver 2016")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -63,7 +64,7 @@ def saison(region):
     Print2016=np.array(Printemps_2016['Consommation'])
     plt.subplot(3,3,2)
     plt.plot(Print2016)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité au Printemps 2016")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -72,7 +73,7 @@ def saison(region):
     Ete2016=np.array(Ete_2016['Consommation'])
     plt.subplot(3,3,3)
     plt.plot(Ete2016)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité à l'été 2016")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -81,7 +82,7 @@ def saison(region):
     Aut2016=np.array(Automne_2016['Consommation'])
     plt.subplot(3,3,4)
     plt.plot(Aut2016)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité à l'Automne 2016")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -90,7 +91,7 @@ def saison(region):
     Hiv20162017=np.array(Hiver_2016_2017['Consommation'])
     plt.subplot(3,3,5)
     plt.plot(Hiv20162017)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité à l'Hiver 2016-2017")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -99,7 +100,7 @@ def saison(region):
     Print2017=np.array(Printemps_2017['Consommation'])
     plt.subplot(3,3,6)
     plt.plot(Print2017)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité au Printemps 2017")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -108,7 +109,7 @@ def saison(region):
     Ete2017=np.array(Ete_2017['Consommation'])
     plt.subplot(3,3,7)
     plt.plot(Ete2017)
-    plt.xticks([1464*x for x in range(4)], range(4))
+    plt.xticks([1460*x for x in range(4)], range(4))
     plt.title("Evolution de la consommation d'électricité à l'été 2017")
     plt.xlabel("Mois")
     plt.ylabel("Consommation (MW)")
@@ -331,16 +332,17 @@ def repartition(region):
 repartition("BRETAGNE")
 
 
-# In[253]:
+# In[308]:
 
 
+#On regarde la répartition de la consommation en électricité sur une année
 def repartition_conso_mois(region):
     df=clean_data(region)
     donne=np.array(df["Consommation"])
     proportion=[]
     for i in range(12):
-        conso_mois=sum(donne[1464*i:1464*(i+1)])
-        prop=conso_mois/sum(donne)
+        conso_mois=sum(donne[1460*i:1460*(i+1)])
+        prop=conso_mois/sum(donne[:17568])
         proportion.append(prop)
 
                        
@@ -353,7 +355,7 @@ def repartition_conso_mois(region):
     plt.title("Histogramme de la consommation en électricité (MW) dans la région {} en 2016".format(region))
 
 
-# In[254]:
+# In[309]:
 
 
 repartition_conso_mois('AUVERGNE RHONE ALPES')
@@ -392,6 +394,65 @@ def repartition_conso_semaine(region):
 
 
 repartition_conso_semaine('AUVERGNE RHONE ALPES')
+
+
+# In[294]:
+
+
+mois={1:"Janvier",2:"Fevrier",3:"Mars",4:"Avril",5:"Mai",6:"Juin",7:"Juillet",8:"Aout",9:"Septembre",10:"Octobre",11:"Novembre",12:"Decembre"}
+def box(region):
+    df=clean_data(region)
+    for i in range(1,13):
+        donne=df.iloc[(i-1)*1460:1460*i]
+        donne=donne['Consommation'].to_frame()
+        donne.plot(kind='box')
+        plt.title("Représentation {}".format(mois[i]))
+        plt.ylabel("Consommation (MW)")
+
+
+# In[295]:
+
+
+box("Bretagne")
+
+
+# In[306]:
+
+
+#Autocorrélation function sur une semaine
+def autocf(region):
+    df=clean_data(region)
+    data=df["Consommation"]
+    sm.graphics.tsa.plot_acf(data, lags=336)
+    plt.xlabel(r'$lags$',fontsize=16)
+    plt.ylabel('ACF',fontsize=16)
+    plt.show()
+
+
+# In[307]:
+
+
+autocf("Auvergne Rhone alpes")
+
+
+# In[312]:
+
+
+#Partial autocrrelation function sur une semaine
+def pautocf(region):
+    df=clean_data(region)
+    data=df["Consommation"]
+    sm.graphics.tsa.plot_pacf(data, lags=48)
+    plt.xlabel(r'$lags$',fontsize=16)
+    plt.ylabel('PACF',fontsize=16)
+    plt.tick_params(labelsize=14)
+    plt.show()
+
+
+# In[313]:
+
+
+pautocf("Auvergne rhone alpes")
 
 
 # In[ ]:
