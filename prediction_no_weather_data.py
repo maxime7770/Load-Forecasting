@@ -94,8 +94,8 @@ ypred = lr.predict(x_test)
 # Dans le cas idéal, on doit être très proche de la droite en pointillés
 
 plt.scatter(expected, ypred)
-plt.ylabel('expected')
-plt.xlabel('predicted')
+plt.xlabel('expected')
+plt.ylabel('predicted')
 plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((ypred - expected) ** 2))))
 plt.show()
@@ -130,8 +130,8 @@ RF = RandomForestRegressor(random_state=0)
 # print(Y_pred)
 
 plt.scatter(expected, Y_pred)
-plt.ylabel('expected')
-plt.xlabel('predicted')
+plt.xlabel('expected')
+plt.ylabel('predicted')
 plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((Y_pred - expected) ** 2))))
 print('RMS de %s pour la random forest' %
@@ -160,8 +160,8 @@ y_ = clf_rf.predict(x_test)
 print('md=%s,ne=%s' % (md, ne))
 
 plt.scatter(expected, y_)
-plt.ylabel('expected')
-plt.xlabel('predicted')
+plt.xlabel('expected')
+plt.ylabel('predicted')
 plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_ - expected) ** 2))))
 print('RMS de %s pour la random forest corrigée' %

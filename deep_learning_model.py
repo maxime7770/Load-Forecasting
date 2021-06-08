@@ -82,13 +82,17 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
 
-plt.plot(y_pred)
-plt.plot(y_test)
+plt.plot(y_pred, label='predicted')
+plt.plot(y_test, label='expected')
+plt.title('Predicted and expected consumptions')
+plt.legend()
 plt.show()
 
 plt.scatter(y_test, y_pred)
 plt.plot([4000, 12000], [4000, 12000], '--k')
-plt.title('y_test en fonction de y_pred')
+plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_test - y_pred) ** 2))))
+plt.xlabel('expected')
+plt.ylabel('predicted')
 plt.show()
 
 
@@ -137,13 +141,16 @@ plt.legend(['train', 'test'], loc='upper left')
 plt.show()
 
 
-plt.plot(y_pred)
-plt.plot(y_test)
-plt.show()
+plt.plot(y_pred, label='predicted')
+plt.plot(y_test, label='expected')
+plt.title('Predicted and expected consumptions')
+plt.legend()
 
 plt.scatter(y_test, y_pred)
 plt.plot([4000, 12000], [4000, 12000], '--k')
-plt.title('y_test en fonction de y_pred')
+plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_test - y_pred) ** 2))))
+plt.xlabel('expected')
+plt.ylabel('predicted')
 plt.show()
 
 
