@@ -84,7 +84,7 @@ def evol_erreur(region,timestep):
         true=truedata[:i-1]
         erreur.append(mean_absolute_percentage_error(true,pred))
         
-    plt.plot(erreur,label="erreur en %")
+    plt.plot(erreur,label="MAPE in %")
     plt.title("Evolution of the error as a function of the length of the prediction")
     plt.xlabel("timestep")
     plt.ylabel("Error")
