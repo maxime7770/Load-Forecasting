@@ -96,6 +96,9 @@ pred = g.predict(x_test)
 
 plt.scatter(expected, pred)
 plt.plot([4000, 12000], [4000, 12000], '--k')
+plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((pred - expected) ** 2))))
+plt.ylabel('expected')
+plt.xlabel('predicted')
 
 plt.show()
 
@@ -114,6 +117,9 @@ pred_opt = opt_gam.predict(x_test)
 
 plt.scatter(expected, pred_opt)
 plt.plot([4000, 12000], [4000, 12000], '--k')
+plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((pred_opt - expected) ** 2))))
+plt.ylabel('expected')
+plt.xlabel('predicted')
 
 plt.show()
 
@@ -130,8 +136,9 @@ pred_rand = random_gam.predict(x_test)
 
 plt.scatter(expected, pred_rand)
 plt.plot([4000, 12000], [4000, 12000], '--k')
-
-plt.show()
+plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((pred_rand - expected) ** 2))))
+plt.ylabel('expected')
+plt.xlabel('predicted')
 
 print("MAPE pour le random GAM : %s" %
       mean_absolute_percentage_error(expected, pred_rand))
