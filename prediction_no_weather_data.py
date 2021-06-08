@@ -94,7 +94,9 @@ ypred = lr.predict(x_test)
 # Dans le cas idéal, on doit être très proche de la droite en pointillés
 
 plt.scatter(expected, ypred)
-plt.plot([0, 12000], [0, 12000], '--k')
+plt.ylabel('expected')
+plt.xlabel('predicted')
+plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((ypred - expected) ** 2))))
 plt.show()
 print('RMS de %s pour la régression linéaire' %
@@ -102,8 +104,9 @@ print('RMS de %s pour la régression linéaire' %
 
 # Maintenant on trace séparément ypred et expected : dans le cas idéal, les 2 courbes doivent être proches
 
-plt.plot(ypred, label='valeur prédite')
-plt.plot(expected, label='valeur attendue')
+plt.plot(ypred, label='predicted values')
+plt.plot(expected, label='expected values')
+plt.title('Predicted and expected consumptions')
 plt.legend()
 plt.show()
 
@@ -127,10 +130,18 @@ RF = RandomForestRegressor(random_state=0)
 # print(Y_pred)
 
 plt.scatter(expected, Y_pred)
-plt.plot([0, 12000], [0, 12000], '--k')
+plt.ylabel('expected')
+plt.xlabel('predicted')
+plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((Y_pred - expected) ** 2))))
 print('RMS de %s pour la random forest' %
       np.sqrt(np.mean((Y_pred - expected) ** 2)))
+plt.show()
+
+plt.plot(Y_pred, label='predicted values')
+plt.plot(expected, label='expected values')
+plt.title('Predicted and expected consumptions')
+plt.legend()
 plt.show()
 
 mape.append(mean_absolute_percentage_error(expected, Y_pred))
@@ -149,7 +160,9 @@ y_ = clf_rf.predict(x_test)
 print('md=%s,ne=%s' % (md, ne))
 
 plt.scatter(expected, y_)
-plt.plot([0, 12000], [0, 12000], '--k')
+plt.ylabel('expected')
+plt.xlabel('predicted')
+plt.plot([1000, 6000], [1000, 6000], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_ - expected) ** 2))))
 print('RMS de %s pour la random forest corrigée' %
       np.sqrt(np.mean((y_ - expected) ** 2)))
@@ -158,11 +171,11 @@ plt.show()
 
 mape.append(mean_absolute_percentage_error(expected, y_))
 
-l = ['régression', 'random forest', 'random forest optimisée']
+l = ['regression', 'random forest', 'optimized random forest']
 for i in range(3):
 
     plt.plot([0, 1], [mape[i], mape[i]], label=l[i])
-
+plt.title('MAPE coefficients for the 3 different models')
 plt.legend()
 plt.show()
 
@@ -172,3 +185,4 @@ plt.show()
 # RMS de 1604.2535162034355 pour la random forest corrigée
 
 # meilleur MAPE pour régression, puis pour la random forest optimisée puis pour la random forest d'origine.
+# [11.64, 16.5, 17.5] pour les MAPE
