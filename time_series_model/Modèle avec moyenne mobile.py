@@ -25,7 +25,7 @@ import statsmodels.api as sm
 
 #Here is the function that predict the consumption
 def prediction_semaine(region,timestep):
-    data = pd.read_csv('data centrale/train/{}.csv'.format(region),index_col=0)
+    data = pd.read_csv('../data centrale/train/{}.csv'.format(region),index_col=0)
     train=np.array(data["Consommation"])
     semaine=7*24*2
     for i in range(timestep):
@@ -43,7 +43,7 @@ def prediction_semaine(region,timestep):
 #We compare the prediction with the reality
 def truevspred(region,timestep):
     pred=prediction_semaine(region,timestep)
-    test = pd.read_csv('data centrale/test/{}.csv'.format(region),index_col=0)
+    test = pd.read_csv('../data centrale/test/{}.csv'.format(region),index_col=0)
     true=np.array(test["Consumption"])
     b=true[:timestep-1]
     plt.plot(pred,label="prediction")
@@ -77,7 +77,7 @@ def mean_absolute_percentage_error(y_true, y_pred):
 #we take a critical look at our model by looking at its relevance according to the time step
 def evol_erreur(region,timestep):
     erreur=[]
-    test = pd.read_csv('data centrale/test/{}.csv'.format(region),index_col=0)
+    test = pd.read_csv('../data centrale/test/{}.csv'.format(region),index_col=0)
     truedata=np.array(test["Consommation"])
     for i in range(1,timestep+2):
         pred=prediction_semaine(region,i)
