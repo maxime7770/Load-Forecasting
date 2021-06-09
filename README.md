@@ -18,6 +18,7 @@ pip install scipy
 
 ## Usage
 
+Pour exécuter un fichier .py, se placer dans le dossier où il se trave, sinon ça ne marchera pas à cause des PATHS des fichiers .csv
 
 
 ## Members :
