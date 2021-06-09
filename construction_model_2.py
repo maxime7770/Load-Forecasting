@@ -58,7 +58,7 @@ x_train_series = x_train.values.reshape(
 x_val_series = x_val.values.reshape((x_val.shape[0], x_val.shape[1], 1))
 x_test_series = x_test.values.reshape((x_test.shape[0], x_test.shape[1], 1))
 
-epochs = 100
+epochs = 50
 batch = 128
 lr = 0.003
 adam = optimizers.Adam(lr)
@@ -77,7 +77,7 @@ cnn_history = model_cnn.fit(x_train_series, y_train, validation_data=(
     x_val_series, y_val), epochs=epochs, verbose=2)
 
 
-model_cnn.save('my_model_2.h5')
+model_cnn.save("models_deep_learning/model2_%s.h5" % region)
 
 plt.plot(cnn_history.history['loss'])
 plt.plot(cnn_history.history['val_loss'])

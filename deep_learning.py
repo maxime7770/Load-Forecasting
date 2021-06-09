@@ -14,12 +14,15 @@ from tensorflow.keras import layers
 
 # on charge les deux modèles
 
-model_mlp = keras.models.load_model("my_model_1.h5")
-model_cnn = keras.models.load_model("my_model_2.h5")
 
-
-region = 'ILE DE FRANCE'
+# choisir ici le nom de la région, si le modèle correspondant n'est pas déjà construit,
+region = 'BRETAGNE'
+# utiliser les fonctions construction_model_1 ou 2.
 data = pd.read_csv('dataset_centrale/data/test/%s.csv' % region)
+model_mlp = keras.models.load_model(
+    "models_deep_learning/model1_%s.h5" % region)
+model_cnn = keras.models.load_model(
+    "models_deep_learning/model2_%s.h5" % region)
 
 
 def tf(v):
@@ -68,7 +71,10 @@ plt.legend()
 plt.show()
 
 plt.scatter(y_test, y_pred)
-plt.plot([4000, 12000], [4000, 12000], '--k')
+m = min(np.min(y_test), np.min(y_pred))
+M = max(np.max(y_test), np.max(y_pred))
+
+plt.plot([m, M], [m, M], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_test - y_pred) ** 2))))
 plt.xlabel('expected')
 plt.ylabel('predicted')
@@ -104,7 +110,10 @@ plt.legend()
 plt.show()
 
 plt.scatter(y_test, y_pred)
-plt.plot([4000, 12000], [4000, 12000], '--k')
+m = min(np.min(y_test), np.min(y_pred))
+M = max(np.max(y_test), np.max(y_pred))
+
+plt.plot([m, M], [m, M], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_test - y_pred) ** 2))))
 plt.xlabel('expected')
 plt.ylabel('predicted')

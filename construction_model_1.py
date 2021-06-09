@@ -50,7 +50,7 @@ x_train = train[:24537].iloc[:, 2:11]
 x_val = train[24537:].iloc[:, 2:11]
 x_test = test.iloc[:, 2:11]
 
-epochs = 100
+epochs = 50
 batch = 128
 lr = 0.003
 adam = optimizers.Adam(lr)
@@ -68,7 +68,7 @@ model_mlp.summary()
 mlp_history = model_mlp.fit(x_train, y_train, validation_data=(
     x_val, y_val), epochs=epochs, verbose=2)
 
-model_mlp.save('my_model_1.h5')
+model_mlp.save("models_deep_learning/model1_%s.h5" % region)
 
 
 plt.plot(mlp_history.history['loss'])
