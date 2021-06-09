@@ -44,7 +44,7 @@ def prediction_semaine(region,timestep):
 def truevspred(region,timestep):
     pred=prediction_semaine(region,timestep)
     test = pd.read_csv('../data centrale/test/{}.csv'.format(region),index_col=0)
-    true=np.array(test["Consumption"])
+    true=np.array(test["Consommation"])
     b=true[:timestep-1]
     plt.plot(pred,label="prediction")
     plt.plot(b,label="True")
