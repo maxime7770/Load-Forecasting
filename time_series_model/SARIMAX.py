@@ -28,7 +28,7 @@ def mean_absolute_percentage_error(y_true, y_pred):
 
 
 def Sarimax(region,jour):
-    finaldf = pd.read_csv('dataset_centrale/data/train/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)   
+    finaldf = pd.read_csv('../dataset_centrale/data/train/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)   
     endog=finaldf['Consommation']
     endog2=np.asarray(finaldf['Consommation'])
     year=365*48
@@ -51,7 +51,7 @@ def Sarimax(region,jour):
 
 
 def SarimaxTvsP(region,jour):
-    test = pd.read_csv('dataset_centrale/data/test/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)
+    test = pd.read_csv('../dataset_centrale/data/test/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)
     pred=Sarimax(region,jour)
     true_data=test['Consommation']
     prediction=[]
