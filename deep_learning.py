@@ -120,4 +120,4 @@ def mean_absolute_percentage_error(y_true, y_pred):
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
 
-print('Pour le CNN : MAPE='+str(mean_absolute_percentage_error(y_test, y_pred)))
+print('For CNN : MAPE='+str(mean_absolute_percentage_error(y_test, y_pred)))
