@@ -16,7 +16,7 @@ from tensorflow.keras import layers
 
 
 # choisir ici le nom de la région, si le modèle correspondant n'est pas déjà construit,
-region = 'BRETAGNE'
+region = 'ILE DE FRANCE'
 # utiliser les fonctions construction_model_1 ou 2.
 data = pd.read_csv('../dataset_centrale/data/test/%s.csv' % region)
 model_mlp = keras.models.load_model(
@@ -64,8 +64,8 @@ x_test = test.iloc[:, 2:11]
 y_pred = model_mlp.predict(x_test)
 
 
-plt.plot(y_pred, label='predicted')
-plt.plot(y_test, label='expected')
+plt.plot(y_pred[:300], label='predicted')
+plt.plot(y_test[:300], label='expected')
 plt.title('Predicted and expected consumptions')
 plt.legend()
 plt.show()
@@ -103,8 +103,8 @@ x_test_series = x_test.values.reshape((x_test.shape[0], x_test.shape[1], 1))
 y_pred = model_cnn.predict(x_test_series)
 
 
-plt.plot(y_pred, label='predicted')
-plt.plot(y_test, label='expected')
+plt.plot(y_pred[:300], label='predicted')
+plt.plot(y_test[:300], label='expected')
 plt.title('Predicted and expected consumptions')
 plt.legend()
 plt.show()

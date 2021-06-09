@@ -58,9 +58,9 @@ x_train_series = x_train.values.reshape(
 x_val_series = x_val.values.reshape((x_val.shape[0], x_val.shape[1], 1))
 x_test_series = x_test.values.reshape((x_test.shape[0], x_test.shape[1], 1))
 
-epochs = 50
+epochs = 100
 batch = 128
-lr = 0.003
+lr = 0.0005
 adam = optimizers.Adam(lr)
 
 model_cnn = Sequential()

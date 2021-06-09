@@ -50,9 +50,9 @@ x_train = train[:24537].iloc[:, 2:11]
 x_val = train[24537:].iloc[:, 2:11]
 x_test = test.iloc[:, 2:11]
 
-epochs = 50
+epochs = 100
 batch = 128
-lr = 0.003
+lr = 0.0005
 adam = optimizers.Adam(lr)
 
 
