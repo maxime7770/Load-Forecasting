@@ -17,7 +17,7 @@ import statsmodels.api as sm
 
 #importe le datagramme de la région: mettre le nom exact du fichier excel (/!\ aux majuscules)
 def region_data(region):
-    df = pd.read_csv('dataset_centrale/data/train/{}.csv'.format(region),index_col=0)
+    df = pd.read_csv('../dataset_centrale/data/train/{}.csv'.format(region),index_col=0)
     return df
 
 
@@ -25,7 +25,7 @@ def region_data(region):
 
 
 region="auvergne rhone alpes"
-pd.read_csv('dataset_centrale/data/train/{}.csv'.format(region))
+pd.read_csv('../dataset_centrale/data/train/{}.csv'.format(region))
 
 
 # In[155]:
