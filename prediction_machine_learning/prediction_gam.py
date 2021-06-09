@@ -26,12 +26,12 @@ data_test = pd.read_csv(
     '../dataset_centrale/data/test/%s.csv' % region)['Consommation']
 
 
-def av(weeks, data):  # moyennes sur les semaines précédentes
-    t = weeks*7*24*2
+def av(weeks, data):  # moyennes sur les semaines précédentes (si weeks=3, on regarde les 3 semaines strictement avant)
+    t = (weeks+1)*7*24*2
     n = len(data)
     v = np.zeros(n)
     for i in range(n):
-        v[i] = np.mean(data[i-t:i])
+        v[i] = np.mean(data[i-t:i-7*24*2])
     return v[t:]
 
 
@@ -61,10 +61,10 @@ d = 3
 # données d'entrainement
 
 x1 = av(weeks, data)
-x2 = threedays(d, data)[weeks*24*2*7:]
-x3 = day(data)[weeks*24*2*7:]
+x2 = threedays(d, data)[(weeks+1)*24*2*7:]
+x3 = day(data)[(weeks+1)*24*2*7:]
 y = data[:]
-y = y[weeks*24*2*7:]
+y = y[(weeks+1)*24*2*7:]
 
 x = np.array([x1, x2, x3]).T
 scaler = StandardScaler().fit(x)
@@ -81,7 +81,7 @@ dtest = pd.read_csv(
 d = pd.concat([dtrain, dtest])
 
 
-def av_48h(weeks):  # debut='2017-10-01 00:00:00' par exemple pour la première fenêtre de 48h de l'ensemble de test
+def av_48h(weeks):
     t = (weeks+1)*7*24*2
     n = 96
     v = np.zeros(n)
@@ -100,7 +100,7 @@ def threedays_48h(weeks):
     return v
 
 
-def day(j):  # pour la jème fenetee de 48h de l'ensemble de test
+def day(j):  # pour la jème fenetre de 48h de l'ensemble de test
     v = np.zeros(96)
     for i in range(96):
         v[i] = dtest['weekday'].values[j*48+i]
@@ -169,7 +169,7 @@ opt_gam = LinearGAM(s(0) + s(1) + f(2)).gridsearch(x, y, lam=lams)
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 3  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 2  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère + 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
