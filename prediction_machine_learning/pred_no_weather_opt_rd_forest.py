@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import pandas as pd
-from scipy.stats.stats import median_absolute_deviation
 from sklearn.linear_model import LinearRegression
 import statsmodels.api as sm
 import scipy as sp
@@ -11,17 +10,15 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
 
-
-# UTILISATION : changer le paramètre j défini plus bas pour changer le nombre de fenêtres de 48h sur lesquelles
-# on observe la prédiction (j=0 -> 1 fenêtre, j=1 -> 2 fenêtres=les 4 premiers jours de la fenêtre de test)
-
-# voir https://medium.com/@phylypo/overview-of-time-series-forecasting-from-statistical-to-recent-ml-approaches-c51a5dd4656a
+# la fonction suivante renvoie le MAPE
 
 
 def mean_absolute_percentage_error(y_true, y_pred):
     y_true, y_pred = np.array(y_true), np.array(y_pred)
     return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
 
+
+# voir https://medium.com/@phylypo/overview-of-time-series-forecasting-from-statistical-to-recent-ml-approaches-c51a5dd4656a
 
 region = "BRETAGNE"
 
@@ -123,13 +120,24 @@ def day(j):  # pour la jème fenetee de 48h de l'ensemble de test
     return v
 
 
+RF = RandomForestRegressor(random_state=0)
+
+clf_rf = GridSearchCV(estimator=RF,
+                      param_grid={'max_depth': [2, 3, 4, 5, 10, 15],
+                                  'n_estimators': [10, 20, 30]},
+                      cv=5,
+                      scoring='neg_mean_squared_error')
+clf_rf.fit(x_train, y_train)
+
+md = clf_rf.best_params_['max_depth']
+ne = clf_rf.best_params_['n_estimators']
+
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 3  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 1  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
-mape = []
 while k <= j:
     c = dic1[k]
     x1_test = av_48h(weeks)
@@ -141,28 +149,25 @@ while k <= j:
     x_test = np.array([x1_test, x2_test, x3_test]).T
     x_test = scaler.transform(x_test)
 
-    ypred = lr.predict(x_test)
+    Y_pred = clf_rf.predict(x_test)
 
     expected_total = np.concatenate((expected_total, expected))
-    predicted_total = np.concatenate((predicted_total, ypred))
-    mape.append(mean_absolute_percentage_error(ypred, expected))
-    dic1[k+1] = np.concatenate((dic1[k], ypred))
+    predicted_total = np.concatenate((predicted_total, Y_pred))
+
+    dic1[k+1] = np.concatenate((dic1[k], Y_pred))
     k += 1
 
-    # Ici on trace la valeur prédite en fonction de la valeur attendue
-    # Dans le cas idéal, on doit être très proche de la droite en pointillés
 
 plt.scatter(expected_total, predicted_total)
 plt.xlabel('expected')
 plt.ylabel('predicted')
 plt.plot([1000, 6000], [1000, 6000], '--k')
-plt.title("RMS: {:.2f}".format(np.sqrt(np.mean(
-    (predicted_total - expected_total) ** 2)))+", for %s 48h windows" % (j+1))
+plt.title("RMS: {:.2f}".format(
+    np.sqrt(np.mean((predicted_total - expected_total) ** 2))))
+print('RMS de %s pour la random forest' %
+      np.sqrt(np.mean((predicted_total - expected_total
+                       ) ** 2))+", for %s 48h windows" % (j+1))
 plt.show()
-print('RMS de %s pour la régression linéaire' %
-      np.sqrt(np.mean((predicted_total - expected_total) ** 2)))
-
-# Maintenant on trace séparément ypred et expected : dans le cas idéal, les 2 courbes doivent être proches
 
 plt.plot(predicted_total, label='predicted values')
 plt.plot(expected_total, label='expected values')
@@ -171,9 +176,5 @@ plt.legend()
 plt.show()
 
 
-# la fonction suivante renvoie le MAPE
-
-
-print("MAPE total pour la régression linéaire : %s" %
-      mean_absolute_percentage_error(expected, ypred))
-print("MAPE moyen sur chaque fenêtre pour la régression : %s" % (np.mean(mape)))
+print("MAPE pour random forest optimisée : %s" %
+      mean_absolute_percentage_error(expected_total, predicted_total))
