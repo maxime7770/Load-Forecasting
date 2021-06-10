@@ -34,11 +34,11 @@ def Sarimax(region,jour):
     finaldf = pd.read_csv('../dataset_centrale/data/train/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)   
     endog=finaldf['Consommation']
     endog2=np.asarray(finaldf['Consommation'])
-    year=365*48
+    #year=365*48
     week=7*48
     for i in range(jour):
         training_obs = 30672
-        training_endog = endog[training_obs-year-week+10*i:training_obs-year+10*i]
+        training_endog = endog[training_obs-week+10*i:training_obs+10*i]
         training_mod = sm.tsa.SARIMAX(
         training_endog, order=(27,0,27),seasonal=(27, 0, 27, 48*7*4), trend='c')
         training_res = training_mod.fit()
