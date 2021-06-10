@@ -15,25 +15,32 @@ def visualization():
     fig, axs = plt.subplots(4, 3, figsize=(15, 13))
     axs = axs.ravel()
     for i in range(12):
-        s = "dataset_centrale/data/train/%s.csv" % regions[i]
+        s = "../dataset_centrale/data/train/%s.csv" % regions[i]
         f = pd.read_csv(s)
         axs[i].hist(f["Consommation"], bins=20)
         axs[i].set_title(regions[i])
     plt.show()
 
 
-#visualization()
+# visualization()
 
 # plt.hist(pd.read_csv("dataset_centrale/data/train/OCCITANIE.csv")["Consommation"])
 # plt.show()
 
 
+colors = ['black', 'red', 'darkorange', 'gold', 'yellow', 'chartreuse', 'green',
+          'aqua', 'deepskyblue', 'navy', 'darkviolet', 'deeppink']
+
+
 def moyennes():
     for i in range(12):
-        f = pd.read_csv("dataset_centrale/data/train/%s.csv" % regions[i])
-        plt.plot([np.mean(f["Consommation"])]*100, label=regions[i])
+        f = pd.read_csv("../dataset_centrale/data/train/%s.csv" % regions[i])
+        plt.plot([np.mean(f["Consommation"])]*100,
+                 label=regions[i], color=colors[i])
         plt.legend()
-        plt.title('Consommation moyenne dans chacune des régions')
+        ax = plt.gca()
+        ax.get_xaxis().set_visible(False)
+        plt.title('Average consumption for each region')
     plt.show()
 
 
@@ -43,10 +50,13 @@ def moyennes():
 def ecarts_type():
 
     for i in range(12):
-        f = pd.read_csv("dataset_centrale/data/train/%s.csv" % regions[i])
-        plt.plot([np.sqrt(np.var(f["Consommation"]))]*100, label=regions[i])
+        f = pd.read_csv("../dataset_centrale/data/train/%s.csv" % regions[i])
+        plt.plot([np.sqrt(np.var(f["Consommation"]))] *
+                 100, label=regions[i], color=colors[i])
         plt.legend()
-        plt.title('Ecarts types de la consommation dans chacune des régions')
+        ax = plt.gca()
+        ax.get_xaxis().set_visible(False)
+        plt.title('Standard deviation of the consumption for each region')
     plt.show()
 
 
@@ -55,16 +65,21 @@ def ecarts_type():
 
 def medians():
     for i in range(12):
-        f = pd.read_csv("dataset_centrale/data/train/%s.csv" % regions[i])
-        plt.plot([np.median(f["Consommation"])]*100, label=regions[i])
+        f = pd.read_csv("../dataset_centrale/data/train/%s.csv" % regions[i])
+        plt.plot([np.median(f["Consommation"])]*100,
+                 label=regions[i], color=colors[i])
         plt.legend()
-        plt.title('Consommation médiane dans chacune des régions')
+        ax = plt.gca()
+        ax.get_xaxis().set_visible(False)
+        plt.title('Median consumption for each region')
     plt.show()
 
 
 # medians()
 
 # pour prendre les données qui correspondent à un mois en particulier pour une région
+
+
 def extraction(debut, fin, fichier):
     df = pd.read_csv(fichier, index_col=0)
     d = '{} 00:00:00'.format(debut)
@@ -82,25 +97,26 @@ def mois(debut, fin):
 
     m = []
     for i in range(2):
-        f = "dataset_centrale/data/train/%s.csv" % l[i]
+        f = "../dataset_centrale/data/train/%s.csv" % l[i]
 
         axs[i].plot(extraction(debut, fin, f))
         axs[i].set_title('Consommaion de %s à %s en %s' % (debut, fin, l[i]))
-
+        if i == 0:
+            axs[i].get_xaxis().set_visible(False)
         m.append(np.mean(extraction(debut, fin, f)))
     plt.show()
     print('Les consommations en moyenne pendant le mois de %s en %s et %s sont respectivement %s et %s' % (
         mois, l[0], l[1], m[0], m[1]))
 
 
-# mois('2016-07-01', '2016-08-01')
+#mois('2016-07-01', '2016-08-01')
 
-dic = {"tmp2m": "Température", "prate": "Pluie", "tcdcclm": "Nuages"}
+dic = {"tmp2m": "Temperature", "prate": "Rain rate", "tcdcclm": "Cloud cover"}
 
 
 def var_exogenes():
     f = pd.read_csv(
-        "dataset_centrale/data/train/ILE DE FRANCE.csv")
+        "../dataset_centrale/data/train/ILE DE FRANCE.csv")
 
     # fig, axs = plt.subplots(1, 3, figsize=(20, 16))
     # axs = axs.ravel()
@@ -108,19 +124,20 @@ def var_exogenes():
 
     for i in range(3):
         plt.scatter(f[l[i]][::15], f["Consommation"][::15])
-        plt.ylabel('Consommation')
+        plt.ylabel('Consumption')
         plt.xlabel(dic[l[i]])
 
         plt.show()
 
 
-# var_exogenes()
+var_exogenes()
 
 # aucune influence des nuages sur la consommation, et très peu d'influence de la quantité de pluie qui tombe
 # par contre, influence de la température est notable
 
+
 def regression(var):
-    f = pd.read_csv("dataset_centrale/data/train/BRETAGNE.csv")
+    f = pd.read_csv("../dataset_centrale/data/train/ILE DE FRANCE.csv")
     X = f[var]
     X = sm.add_constant(X)
     y = f["Consommation"]
@@ -129,7 +146,7 @@ def regression(var):
     print(ols.summary())
 
     ypred = ols.predict(X)
-    plt.scatter(f[var][::30], f["Consommation"][::30])
+    plt.scatter(f[var][::15], f["Consommation"][::15])
     plt.plot(f[var], ypred, 'r', linewidth=2)
     plt.title('$R^2$ = {:.2f}'.format(ols.rsquared))
     plt.xlabel(dic[var])
@@ -137,4 +154,4 @@ def regression(var):
     plt.show()
 
 
-#regression("tmp2m")
+regression("tmp2m")

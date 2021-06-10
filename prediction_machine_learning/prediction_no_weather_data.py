@@ -125,7 +125,7 @@ def day(j):  # pour la jème fenetee de 48h de l'ensemble de test
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 20  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 19  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
@@ -155,7 +155,10 @@ while k <= j:
 plt.scatter(expected_total, predicted_total)
 plt.xlabel('expected')
 plt.ylabel('predicted')
-plt.plot([1000, 6000], [1000, 6000], '--k')
+m = min(np.min(expected_total), np.min(predicted_total))
+M = max(np.max(expected_total), np.max(predicted_total))
+
+plt.plot([m, M], [m, M], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean(
     (predicted_total - expected_total) ** 2)))+", for %s 48h windows" % (j+1))
 plt.show()

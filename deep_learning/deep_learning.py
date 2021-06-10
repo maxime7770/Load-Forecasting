@@ -51,7 +51,7 @@ test['flag_long_weekend'] = tf(flag_long_we)
 
 
 n = len(train['Consommation'])
-# a peu pres 80% de données d'entrainement
+# a peu pres 80% de données d'entrainement (ie) 24537 instants
 y_train = train['Consommation'].values[:24537]
 y_val = train['Consommation'].values[24537:]
 y_test = test['Consommation'].values
@@ -64,6 +64,8 @@ x_test = test.iloc[:, 2:11]
 y_pred = model_mlp.predict(x_test)
 
 
+y_pred = y_pred
+y_test = y_test
 plt.plot(y_pred, label='predicted')
 plt.plot(y_test, label='expected')
 plt.title('Predicted and expected consumptions')
@@ -94,6 +96,9 @@ print('For mlp network: ' +
       str(mean_absolute_percentage_error(y_test, y_pred)))
 
 
+y_test = test['Consommation'].values
+
+
 x_train_series = x_train.values.reshape(
     (x_train.shape[0], x_train.shape[1], 1))
 x_val_series = x_val.values.reshape((x_val.shape[0], x_val.shape[1], 1))
@@ -103,6 +108,8 @@ x_test_series = x_test.values.reshape((x_test.shape[0], x_test.shape[1], 1))
 y_pred = model_cnn.predict(x_test_series)
 
 
+y_test = y_test
+y_pred = y_pred
 plt.plot(y_pred, label='predicted')
 plt.plot(y_test, label='expected')
 plt.title('Predicted and expected consumptions')

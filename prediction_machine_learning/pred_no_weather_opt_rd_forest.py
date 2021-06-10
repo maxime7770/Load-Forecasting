@@ -134,10 +134,11 @@ ne = clf_rf.best_params_['n_estimators']
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 2  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère+la 2eme etc.
+j = 5  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère+la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
+mape = []
 while k <= j:
     c = dic1[k]
     x1_test = av_48h(weeks)
@@ -153,7 +154,7 @@ while k <= j:
 
     expected_total = np.concatenate((expected_total, expected))
     predicted_total = np.concatenate((predicted_total, Y_pred))
-
+    mape.append(mean_absolute_percentage_error(Y_pred, expected))
     dic1[k+1] = np.concatenate((dic1[k], Y_pred))
     k += 1
 
@@ -161,7 +162,10 @@ while k <= j:
 plt.scatter(expected_total, predicted_total)
 plt.xlabel('expected')
 plt.ylabel('predicted')
-plt.plot([1000, 6000], [1000, 6000], '--k')
+m = min(np.min(expected_total), np.min(predicted_total))
+M = max(np.max(expected_total), np.max(predicted_total))
+
+plt.plot([m, M], [m, M], '--k')
 plt.title("RMS: {:.2f}".format(
     np.sqrt(np.mean((predicted_total - expected_total) ** 2))))
 print('RMS de %s pour la random forest' %
@@ -178,3 +182,4 @@ plt.show()
 
 print("MAPE pour random forest optimisée : %s" %
       mean_absolute_percentage_error(expected_total, predicted_total))
+print("MAPE moyen sur chaque fenêtre pour la régression : %s" % (np.mean(mape)))

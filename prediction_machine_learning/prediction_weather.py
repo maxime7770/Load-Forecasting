@@ -43,8 +43,14 @@ print(ols.summary())
 
 y_pred = ols.predict(x_test)
 
+y_test = y_test[:24*7*2]
+y_pred = y_pred[:24*7*2]
+
 plt.scatter(y_test, y_pred)
-plt.plot([1000, 12000], [1000, 12000], '--k')
+m = min(np.min(y_test), np.min(y_pred))
+M = max(np.max(y_test), np.max(y_pred))
+
+plt.plot([m, M], [m, M], '--k')
 plt.title("RMS: {:.2f}".format(np.sqrt(np.mean((y_test - y_pred) ** 2))))
 plt.xlabel('expected')
 plt.ylabel('predicted')

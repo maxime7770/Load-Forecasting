@@ -109,7 +109,7 @@ def day(j):  # pour la jème fenetre de 48h de l'ensemble de test
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 3  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 9  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
@@ -169,7 +169,7 @@ opt_gam = LinearGAM(s(0) + s(1) + f(2)).gridsearch(x, y, lam=lams)
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 2  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère + 2eme etc.
+j = 9  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère + 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
@@ -229,7 +229,7 @@ random_gam = LinearGAM(s(0) + s(1) + f(2)).gridsearch(x, y, lam=lams)
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 3  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 9  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
