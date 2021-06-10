@@ -28,7 +28,7 @@ from statsmodels.stats.diagnostic import acorr_ljungbox
 
 
 region='bretagne'
-data = pd.read_csv('data centrale/train/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)
+data = pd.read_csv('data_set centrale/data/train/{}.csv'.format(region),header=0, index_col=0, parse_dates=True, squeeze=True)
 df=data["Consommation"][30672-336:]
 
 
