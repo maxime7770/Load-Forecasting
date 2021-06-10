@@ -128,7 +128,7 @@ clf = RandomForestClassifier(
 
 dic1 = {0: dtrain["Consommation"].values}
 
-j = 1  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
+j = 20  # 0 pour 1ère fenetre de 48h, 1 pour la 1ère et la 2eme etc.
 k = 0
 expected_total = np.array([])
 predicted_total = np.array([])
