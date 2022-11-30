@@ -2,7 +2,7 @@
 
 ## Description
 
-This project aims at analyzing and forecasting data containing electricity consumption for 12 different regions from 2016-01-01-2016 to 2017-12-31.
+This project aims at analyzing and forecasting data containing electricity consumption for 12 different regions from 2016-01-01 to 2017-12-31.
 
 ## Installation
 
@@ -18,7 +18,7 @@ pip install scipy
 
 ## Usage
 
-Pour exécuter un fichier .py, se placer dans le dossier où il se trave, sinon ça ne marchera pas à cause des PATHS des fichiers .csv
+Please run .py files from their respective parents folders.
 
 
 ## Members :
